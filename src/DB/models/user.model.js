@@ -45,7 +45,13 @@ const userSchema = new mongoose.Schema({
     },
     DOB : {
         type : Date,
-        required: true
+        required: true,
+        validate: {
+            validator: function (value) {
+                return DateTime.now().diff(DateTime.fromISO(value),"years").years > 18 
+            },
+            message:"Your age is less than 18 years old"
+        }
     },
     phone : {
         type : String,
@@ -83,10 +89,18 @@ const userSchema = new mongoose.Schema({
         public_id : String
     },
     changePasswordAt : Date,
-    otpEmail : String,
-    tempEmail : String,
-    otpNewEmail: String,
-    otpPassword : String,
+    otpEmail : { 
+        type : String,
+        expiresIn: {
+            type: Date
+        }
+    },
+    otpPassword : {
+        type : String,
+        expiresIn: {
+            type: Date
+        }
+    },
 
 },{
     virtuals : {

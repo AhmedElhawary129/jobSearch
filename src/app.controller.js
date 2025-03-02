@@ -7,6 +7,7 @@ import { rateLimit } from "express-rate-limit";
 import companyRouter from "./modules/companies/company.controller.js";
 import jobRouter from "./modules/jobs/job.controller.js";
 import authRouter from "./modules/Auth/auth.controller.js";
+import helmet from "helmet";
 
 // limiter
 const limiter = rateLimit({
@@ -27,17 +28,17 @@ const bootstrap = async (app, express) => {
 
 
     // use cors middleware
-    app.use(cors())
+    app.use(cors());
 
 
     // limiter
-    app.use(limiter)
+    app.use(limiter);
+
+    //helmet
+    app.use(helmet());
 
 
-    // test()
-
-
-    app.use("/uploads", express.static(path.resolve("src/uploads")))
+    app.use("/uploads", express.static(path.resolve("src/uploads")));
 
 
     // use json middleware for parsing request data
@@ -46,7 +47,7 @@ const bootstrap = async (app, express) => {
 
     // home router
     app.get("/", (req, res, next) => {
-        return res.status(200).json({MSG : "Hello on my social app"})
+        return res.status(200).json({MSG : "Hello on my social app"});
     })
 
     // application routers
