@@ -6,6 +6,7 @@ import { Hash } from "../encryption/index.js";
 import { html } from "../../service/template-email.js";
 
 export const eventEmitter = new EventEmitter();
+
 eventEmitter.on("EmailConfirmation", async (data) => {
   const { email, id } = data;
 
@@ -14,7 +15,7 @@ eventEmitter.on("EmailConfirmation", async (data) => {
 
   const hash = await Hash({ key : otp, SALT_ROUNDS : process.env.SALT_ROUNDS})
   await userModel.updateOne({email, _id : id}, {otpEmail : hash})
-  await sendEmail(email, "Confirm Email", html({otp, message: "Confirm Email"}));
+  await sendEmail({to:email , subject:"Confirm Email",html:html({otp, message: "Confirm Email"})});
 });
 
 
@@ -27,7 +28,7 @@ eventEmitter.on("newEmailConfirmation", async (data) => {
 
   const hash = await Hash({ key : otp, SALT_ROUNDS : process.env.SALT_ROUNDS})
   await userModel.updateOne({tempEmail : email, _id : id}, {otpNewEmail : hash})
-  await sendEmail(email, "Confirm Email", html({otp, message: "Confirm New Email"}));
+  await sendEmail({to:email , subject:"Confirm Email",html:html({otp, message: "Confirm New Email"})});
 });
 
 
@@ -40,5 +41,5 @@ eventEmitter.on("forgetPassword", async (data) => {
 
   const hash = await Hash({ key : otp, SALT_ROUNDS : process.env.SALT_ROUNDS})
   await userModel.updateOne({email}, {otpPassword : hash})
-  await sendEmail(email, "Forget Password", html({otp, message: "Forget Password"}));
+  await sendEmail({to:email , subject:"Confirm Email",html:html({otp, message: "Forget Password"})});
 });

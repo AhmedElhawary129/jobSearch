@@ -109,9 +109,8 @@ export const logIn = asyncHandler(async (req, res, next) => {
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-//#########################################################################
 // signup with google =====>
-export const loginWithGmail = asyncHandler(async (req, res, next) => {
+export const signUpWithGmail = asyncHandler(async (req, res, next) => {
     const {idToken} = req.body;
     const client = new OAuth2Client();
     async function verify() {
@@ -128,10 +127,32 @@ export const loginWithGmail = asyncHandler(async (req, res, next) => {
         user = await dbService.create({model : userModel, query :{
             name,
             email,
-            confirmed: email_verified,
-            image: picture,
+            isConfirmed: email_verified,
+            profileImage: picture,
             provider: providerTypes.google
         }})
+    }
+    return res.status(201).json({ MSG: "SignUp with google done", user});
+});
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+// login with google =====>
+export const logInWithGmail = asyncHandler(async (req, res, next) => {
+    const {idToken} = req.body;
+    const client = new OAuth2Client();
+    async function verify() {
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.CLIENT_ID, 
+    });
+    const payload = ticket.getPayload();
+    return payload;
+    }
+    const {email, email_verified, picture, name} = await verify();
+    let user = await dbService.findOne({model : userModel, filter : {email}})
+    if (!user) {
+        return next(new AppError("User not found"), 402)
     }
     if (user.provider != providerTypes.google) {
         return next(new AppError("Please login with in system"), 400)
@@ -147,7 +168,6 @@ export const loginWithGmail = asyncHandler(async (req, res, next) => {
     });
     return res.status(201).json({ MSG: "DONE", token : access_token});
 });
-
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 

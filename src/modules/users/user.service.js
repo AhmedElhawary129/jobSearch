@@ -189,49 +189,6 @@ export const freezeAccount = asyncHandler(async (req, res, next) => {
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-// loginWithGmail =====>
-export const loginWithGmail = asyncHandler(async (req, res, next) => {
-
-    const {idToken} = req.body;
-
-    const client = new OAuth2Client();
-    async function verify() {
-    const ticket = await client.verifyIdToken({
-        idToken,
-        audience: process.env.CLIENT_ID, 
-    });
-    const payload = ticket.getPayload();
-    return payload;
-    }
-    const {email, email_verified, picture, name} = await verify();
-    let user = await dbService.findOne({model : userModel, filter : {email}})
-    if (!user) {
-
-        user = await dbService.create({model : userModel, query :{
-            name,
-            email,
-            confirmed: email_verified,
-            image: picture,
-            provider: providerTypes.google
-        }})
-    }
-    if (user.provider != providerTypes.google) {
-        return next(new AppError("Please login with in system"), 400)
-}
-    // generate token
-    const access_token = await generateToken({
-        payload: { email, id: user._id },
-        SIGNATURE:
-        user.role == roleTypes.user
-            ? process.env.SIGNATURE_TOKEN_USER
-            : process.env.SIGNATURE_TOKEN_ADMIN,
-        option: { expiresIn: "1d" },
-    });
-    return res.status(201).json({ MSG: "DONE", token : access_token});
-});
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
 // ----------------Admin Dashboard APIs----------=====>
 
 // Ban or unbanned specific user =====>

@@ -75,3 +75,10 @@ export const enumsActionCompany = {
     banCompany : "banCompany",
     unBannedCompany : "unBannedCompany"
 }
+
+
+
+export const enumsSender = {
+    HR : "HR",
+    CompanyOwner : "CompanyOwner"
+}

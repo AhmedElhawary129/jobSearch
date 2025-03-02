@@ -12,10 +12,14 @@ authRouter.post("/signUp",
 
 authRouter.patch("/confirmEmail", validation(AV.confirmEmailSchema), AS.confirmEmail)
 authRouter.post("/logIn", validation(AV.logInSchema), AS.logIn)
+
+authRouter.post("/signUpWithGmail", AS.signUpWithGmail)
+authRouter.post("/logInWithGmail", AS.logInWithGmail)
+
 authRouter.patch("/forgetPassword", validation(AV.forgetPasswordSchema), AS.forgetPassword)
 authRouter.patch("/resetPassword", validation(AV.resetPasswordSchema), AS.resetPassword)
+
 authRouter.get("/refreshToken", validation(AV.refreshTokenSchema), AS.refreshToken)
 
-// authRouter.post("/loginWithGmail", US.loginWithGmail)
 
 export default authRouter

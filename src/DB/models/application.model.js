@@ -31,18 +31,13 @@ const applicationSchema = new mongoose.Schema({
         default: enumStatus.pending
     }
 },{
-    // toJSON : {virtuals : true},
-    // toObject : {virtuals : true},
+    toJSON : {virtuals : true},
+    toObject : {virtuals : true},
     timestamps : {
         createdAt : true,
         updatedAt : true
     }
 })
 
-// applicationSchema.virtual("application", {
-//     ref : "Job",
-//     localField : "_id",
-//     foreignField : "applicationId"
-// })
 
 export const applicationModel = mongoose.model.Application || mongoose.model("Application", applicationSchema)
