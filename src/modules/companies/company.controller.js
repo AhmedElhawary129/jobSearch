@@ -1,10 +1,9 @@
 import { Router } from "express";
 import * as CS from "./company.service.js";
-import { authentication, authorization } from "../../middleware/auth.js";
+import { authentication } from "../../middleware/auth.js";
 import { validation } from "../../middleware/validation.js";
 import * as CV from "./company.validation.js";
 import { multerMost } from "../../middleware/multer.js";
-import commentRouter from "../jobs/job.controller.js";
 import { fileTypes } from "../../DB/enums.js";
 import jobRouter from "../jobs/job.controller.js";
 

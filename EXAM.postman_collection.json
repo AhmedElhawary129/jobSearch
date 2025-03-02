@@ -972,12 +972,7 @@
 						],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"formdata": []
 						},
 						"url": {
 							"raw": "http://localhost:3000/jobs/updateJob/67c1c6e8d2ea0520d5caf981",
@@ -1062,6 +1057,73 @@
 								"67c1c62b4796bdfe365bab13",
 								"jobs",
 								"getJobs",
+								"67c1c6e8d2ea0520d5caf981"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterJobs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFobWVkZWxoYXdhcnlhZTEyOUBnbWFpbC5jb20iLCJpZCI6IjY3YzA4ZTdlN2ViNWI4MzhkZWU5MDhlOSIsImlhdCI6MTc0MDk1MDIzNywiZXhwIjoxNzQwOTUzODM3fQ.-4hMuiDjXqycdcX-QrAIRY4NJSv9BgZRSqHOQlX3Dlk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobTitle\" : \"B\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/jobs/filterJobs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jobs",
+								"filterJobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getApps",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFobWVkZWxoYXdhcnlhZTEyOUBnbWFpbC5jb20iLCJpZCI6IjY3YzA4ZTdlN2ViNWI4MzhkZWU5MDhlOSIsImlhdCI6MTc0MDk1MDIzNywiZXhwIjoxNzQwOTUzODM3fQ.-4hMuiDjXqycdcX-QrAIRY4NJSv9BgZRSqHOQlX3Dlk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/companies/67c1c62b4796bdfe365bab13/jobs/getApps/67c1c6e8d2ea0520d5caf981",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"67c1c62b4796bdfe365bab13",
+								"jobs",
+								"getApps",
 								"67c1c6e8d2ea0520d5caf981"
 							]
 						}

@@ -74,3 +74,33 @@ export const getJobsSchema =  {
         companyId : generalRules.ObjectId.required()
     }).required()
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+export const filterJobsSchema =  {
+    body : joi.object({
+        jobTitle : joi.string(), 
+        jobLocation : joi.string().valid(enumLocation.onsite, enumLocation.remotely, enumLocation.hybrid), 
+        workingTime : joi.string().valid(enumWorkingTime.fullTime, enumWorkingTime.partTime), 
+        seniorityLevel : joi.string().valid(
+            enumSeniorityLevel.fresh, 
+            enumSeniorityLevel.Junior, 
+            enumSeniorityLevel.MidLevel,
+            enumSeniorityLevel.Senior, 
+            enumSeniorityLevel.TeamLead, 
+            enumSeniorityLevel.CTO
+        ), 
+        technicalSkills : joi.array(), 
+    }).required(),
+    headers : generalRules.headers
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+export const getAppsSchema =  {
+    params : joi.object({
+        jobId : generalRules.ObjectId.required(), 
+        companyId : generalRules.ObjectId.required() 
+    }).required(),
+    headers : generalRules.headers
+}

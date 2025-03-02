@@ -1,8 +1,7 @@
 import * as dbService from "../../DB/dbService.js";
-import { jobModel, companyModel } from "../../DB/models/index.js";
+import { companyModel } from "../../DB/models/index.js";
 import cloudinary from "../../utils/cloudinary/index.js";
 import { AppError, asyncHandler } from "../../utils/index.js";
-import { pagination } from "../../utils/features/index.js";
 import { roleTypes } from "../../DB/enums.js";
 
 

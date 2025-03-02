@@ -1,7 +1,5 @@
 import * as dbService from "../../DB/dbService.js";
-
 import { companyModel, jobModel } from "../../DB/models/index.js";
-
 import { pagination } from "../../utils/features/index.js";
 import { AppError, asyncHandler } from "../../utils/index.js";
 
@@ -138,3 +136,65 @@ if (!company) {
 const {data, _page} = await pagination({model : companyModel, page : req.query.page, populate : [{path :"companyId"}]})
     return res.status(201).json({ MSG: "DONE", data:  {data, _page}, company});
 });
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+// Get all Jobs that match the following filters and if no filters apply then get all jobs =====>
+export const filterJobs = async (req, res, next) => {
+    const {
+        workingTime, 
+        jobLocation, 
+        seniorityLevel, 
+        jobTitle, 
+        technicalSkills
+    } = req.body;
+    const {page, limit} = req.query;
+
+    let filteration = {};
+
+    if (workingTime) filteration.workingTime = workingTime;
+    if (jobLocation) filteration.jobLocation = jobLocation;
+    if (seniorityLevel) filteration.seniorityLevel = seniorityLevel;
+    if (jobTitle) filteration.jobTitle = {$regex : jobTitle, $options : "i"};
+    if (technicalSkills){
+        const skilles = technicalSkills.split(",");
+        filteration.technicalSkills = {$in : skilles};
+    } 
+    const {_page, data} = await pagination({
+        model : jobModel, 
+        page : page, 
+        limit, 
+        populate : ["companyId"], 
+        sort : {createAt : -1}
+    })
+    return res.status(200).json({MSG : "Filteration Done", jobs : {_page, data}})
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+// Get all applications for specific Job =====>
+export const getApps = async (req, res, next) => {
+    const {jobId, companyId} = req.params;
+
+    const company = await dbService.findOne({model : companyModel, filter : {_id : companyId}})
+    if (!company) {
+        return next(new AppError("Company not found", 405))
+    }
+
+    if (!await dbService.findOne({model : jobModel, filter : {_id : jobId}})) {
+        return next(new AppError("Job Not Found", 402))
+    }
+
+    if (company.createdBy.toString() !== req.user._id.toString()) {
+        return next(new AppError("You have no permision to do that", 409))
+    }
+
+    const job = await dbService.findOne({
+        model : jobModel, 
+        filter : {_id : jobId}, 
+        populate : {path : "CV", 
+            populate : {path : "userId"}
+        }
+    })
+    return res.status(200).json({MSG : "DONE", job})
+}

@@ -4,7 +4,7 @@ import { authentication, authorization } from "../../middleware/auth.js";
 import { validation } from "../../middleware/validation.js";
 import * as UV from "./user.validation.js";
 import { multerMost } from "../../middleware/multer.js";
-import { fileTypes, roleTypes } from "../../DB/enums.js";
+import { fileTypes } from "../../DB/enums.js";
 
 const userRouter = Router()
 

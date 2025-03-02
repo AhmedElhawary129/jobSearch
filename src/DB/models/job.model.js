@@ -50,6 +50,10 @@ const jobOpportunitySchema = new mongoose.Schema({
     companyId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Company"
+    },
+    CV : {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Application"
     }
 },{
     toJSON : {virtuals : true},
